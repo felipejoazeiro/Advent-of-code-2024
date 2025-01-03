@@ -69,8 +69,7 @@ class Solutions {
             let count = 0;
             columns.forEach(element => {
                 var newColumn = element.split(' ');
-                let test = this.testArray(newColumn, true);
-                console.log(test);
+                let test = this.testArray(newColumn);
                 if (test) count++;
             });
 
@@ -80,36 +79,40 @@ class Solutions {
         }
     }
 
-    testArray(data, firsTry){
-        let increasing = true;
-        let decreasing = true;
+    testArray(data){
+        const isValid = (array) => {
+            let increasing = true;
+            let decreasing = true;
+    
+            for (let i = 0; i < array.length - 1; i++) {
+                let value = array[i] - array[i + 1];
+                if (value > 0) {
+                    increasing = false;
+                } else if (value < 0) {
+                    decreasing = false;
+                }
+    
+                if (!isNaN(value) && (value < -3 || value > 3 || value === 0)) {
+                    return false; 
+                }
+            }
+    
+            return increasing || decreasing;
+        };
+        if (isValid(data)) {
+            return true;
+        }
+    
         for (let i = 0; i < data.length; i++) {
-            let value = data[i] - data[i+1];
-            if(value >0){
-                increasing=false;
-            }else if(value<0){
-                decreasing=false;
-            }
-            if(!isNaN(value)){
-                if(value < -3 || value > 3 || value ==0){
-                    if(firsTry){
-                        console.log(data)
-                        data.splice(i,1);
-                        console.log(data)
-                        return this.testArray(data, false);
-                    }
-                   return false;
-                }
-            }
-            if(!increasing && !decreasing){
-                if(firsTry){
-                    data.splice(i,1);
-                    return this.testArray(data, false);
-                }
-                return false;
+            const newData = [...data];
+            newData.splice(i, 1);
+
+            if (isValid(newData)) {
+                return true;
             }
         }
-        return true;
+    
+        return false;
     }
 }
 
