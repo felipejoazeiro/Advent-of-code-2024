@@ -31,7 +31,12 @@ class Solutions{
     }
 
     secondPart(){
-        
+        const filePath = path.join(__dirname, 'data.txt');
+        const data = fs.readFileSync(filePath, 'utf-8');
+
+        const answer  = data.split('do()').map(values=>values.split('don\'t()')[0]).map(data=>[...data.matchAll(/mul\((\d+),(\d+)\)/g)]).flat().map(value=>value[1] * value[2]).reduce((sum, product) => sum + product, 0);
+
+        console.log(answer);
     }
 }
 
