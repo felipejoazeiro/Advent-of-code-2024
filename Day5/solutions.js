@@ -17,7 +17,7 @@ class Solutions{
         const json = {}
 
         rules.split("\n").forEach((line)=>{
-            const [left, right] = line.split('|').map(num=>parseInt(num.trim(),10))
+            const [left, right] = line.split('|').map(num=>num.trim())
             if(!json[left]){
                 json[left]=[]
             }
@@ -30,18 +30,16 @@ class Solutions{
 
         for (let i = 0; i < dataLines.length; i++) {
             let line = dataLines[i].trim().split(',');
-            for (let j = line.length; j > 0; j--) {
-                for (let z = 0; z < line.length -1; z++) {
-                    let last = line[line.length-1];
-                    console.log(last);
-                    line.pop()
+            for (let j = line.length-1; j >= 0; j--) {
+                for (let z = j-1; z >= 0; z--) {
+                    if(json[line[j]]?.includes(line[z])){ valid = false; break;};
                 }
-                if(!valid) break;
             }
-            console.log(valid);
-            if(valid) count++ 
+            if(valid) count = count + parseInt(dataLines[i].trim().split(',')[Math.floor(dataLines[i].trim().split(',').length/2)])
             valid = true;
         }
+
+        console.log(count)
     }
 
     secondPart(){}
