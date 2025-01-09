@@ -35,14 +35,49 @@ class Solutions{
                     if(json[line[j]]?.includes(line[z])){ valid = false; break;};
                 }
             }
-            if(valid) count = count + parseInt(dataLines[i].trim().split(',')[Math.floor(dataLines[i].trim().split(',').length/2)])
+            if(valid) count = count + parseInt(line[Math.floor(line.length/2)])
             valid = true;
         }
 
         console.log(count)
     }
 
-    secondPart(){}
+    secondPart(){
+        let [rules, data] = this.getData().split("\n\r\n");
+
+        const json = {}
+
+        rules.split("\n").forEach((line)=>{
+            const [left, right] = line.split('|').map(num=>num.trim())
+            if(!json[left]){
+                json[left]=[]
+            }
+            json[left].push(right);
+        })
+
+        const dataLines = data.split('\n')
+        let valid = false;
+        let count = 0
+
+        for (let i = 0; i < dataLines.length; i++) {
+            let line = dataLines[i].trim().split(',');
+            for (let j = line.length-1; j >= 0; j--) {
+                for (let z = j-1; z >= 0; z--) {
+                    if(json[line[j]]?.includes(line[z])){ 
+                        valid = true;
+                        let a = line[j]; 
+                        line[j] = line[z]; 
+                        line[z] = a;
+                        z=j;
+                    };
+                }
+            }
+            if(valid) count = count + parseInt(line[Math.floor(line.length/2)])
+            valid = false;
+        }
+
+        console.log(count)
+    }
 }
 
 module.exports = Solutions;
